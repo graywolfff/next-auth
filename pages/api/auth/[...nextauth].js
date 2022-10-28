@@ -4,24 +4,14 @@ export default NextAuth({
   providers: [
     CredentialProvider({
       name: "credentials",
-      credentials: {
-        username: {
-          type: "text",
-          label: "email",
-          placeholder: "ex@example.com",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-        },
-      },
+      credentials: {},
       async authorize(credentials) {
         const payload = {
           username: credentials.username,
           password: credentials.password,
         };
 
-        const res = await fetch("http://localhost:8000/login", {
+        const res = await fetch(`${process.env.ENDPOIT_URL}/login`, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: {
@@ -69,9 +59,9 @@ export default NextAuth({
       return session;
     },
   },
-  secret: "test",
+  secret: process.env.PRIVATE_APP_KEY,
   jwt: {
-    secret: "test",
+    secret: process.env.PRIVATE_APP_KEY,
     encryption: true,
   },
 });
